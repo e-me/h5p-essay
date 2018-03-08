@@ -6,9 +6,6 @@
         {
           "label": "Typ",
           "description": "Optionale Medien, die vor der Aufgabe angezeigt werden können."
-        },
-        {
-          "label": "Bildzoom deaktivieren"
         }
       ]
     },
@@ -86,36 +83,6 @@
               {
                 "label": "Rückmeldung, wenn Schlagwort nicht verwendet",
                 "description": "Diese Rückmeldung wird angezeigt, wenn die Lernenden das Schlagwort oder seine Variationen im Text nicht verwendet haben."
-              },
-              {
-                "label": "Wort bei Rückmeldung, wenn Schlagwort verwendet",
-                "description": "Diese Option erlaubt es anzugeben, welches Wort vor der Rückmeldung angezeigt wird, wenn ein Schlagwort verwendet wurde.",
-                "options": [
-                  {
-                    "label": "Schlagwort"
-                  },
-                  {
-                    "label": "gefundene Alternative"
-                  },
-                  {
-                    "label": "gegebene Antwort"
-                  },
-                  {
-                    "label": "nichts"
-                  }
-                ]
-              },
-              {
-                "label": "Wort bei Rückmeldung, wenn Schlagwort nicht verwendet",
-                "description": "Diese Option erlaubt es anzugeben, welches Wort vor der Rückmeldung angezeigt wird, wenn ein Schlagwort verwendet wurde.",
-                "options": [
-                  {
-                    "label": "Schlagwort"
-                  },
-                  {
-                    "label": "nichts"
-                  }
-                ]
               }
             ]
           }
@@ -174,11 +141,15 @@
             {
               "label": "10 Zeilen"
             }
-          ]
+          ],
+          "default": "10"
         },
         {
           "label": "\"Wiederholen\" zulassen",
           "description": "Wenn diese Option angewählt ist, können Lernende die Aufgabe wiederholen."
+        },
+        {
+          "label": "Bildzoom für das Bild deaktivieren"
         },
         {
           "label": "Ignoriere die Bepunktung",
@@ -186,11 +157,21 @@
         },
         {
           "label": "Prozentsatz zum Bestehen",
-          "description": "Prozentsatz, der zum Bestehen nötig ist"
+          "description": "Prozentsatz, der zum Bestehen nötig ist",
+          "showWhen": {
+            "rules": [
+              {}
+            ]
+          }
         },
         {
           "label": "Prozentsatz zum Meistern",
-          "description": "Prozentsatz, der zum Meistern nötig ist"
+          "description": "Prozentsatz, der zum Meistern nötig ist",
+          "showWhen": {
+            "rules": [
+              {}
+            ]
+          }
         },
         {
           "label": "Einstellung für \"Groß-Kleinschreibung\" überschreiben",

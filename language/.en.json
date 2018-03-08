@@ -6,9 +6,6 @@
         {
           "label": "Type",
           "description": "Optional media to display above the question."
-        },
-        {
-          "label": "Disable image zooming"
         }
       ]
     },
@@ -86,36 +83,6 @@
               {
                 "label": "Feedback if keyword missing",
                 "description": "This feedback will be displayed if the user doesn’t include this keyword or its alternatives in the answer."
-              },
-              {
-                "label": "Feedback word shown if keyword included",
-                "description": "This option allows you to specify which word should be shown in front of your feedback if a keyword was found in the text.",
-                "options": [
-                  {
-                    "label": "keyword"
-                  },
-                  {
-                    "label": "alternative found"
-                  },
-                  {
-                    "label": "answer given"
-                  },
-                  {
-                    "label": "none"
-                  }
-                ]
-              },
-              {
-                "label": "Feedback word shown if keyword missing",
-                "description": "This option allows you to specify which word should be shown in front of your feedback if a keyword was not found in the text.",
-                "options": [
-                  {
-                    "label": "keyword"
-                  },
-                  {
-                    "label": "none"
-                  }
-                ]
               }
             ]
           }
@@ -174,11 +141,15 @@
             {
               "label": "10 lines"
             }
-          ]
+          ],
+          "default": "10"
         },
         {
           "label": "Enable \"Retry\"",
           "description": "If checked, learners can retry the task."
+        },
+        {
+          "label": "Disable image zooming for question image"
         },
         {
           "label": "Ignore scoring",
@@ -186,11 +157,21 @@
         },
         {
           "label": "Passing percentage",
-          "description": "Percentage that's necessary for passing"
+          "description": "Percentage that's necessary for passing",
+          "showWhen": {
+            "rules": [
+              {}
+            ]
+          }
         },
         {
           "label": "Mastering percentage",
-          "description": "Percentage that's necessary for mastering"
+          "description": "Percentage that's necessary for mastering",
+          "showWhen": {
+            "rules": [
+              {}
+            ]
+          }
         },
         {
           "label": "Override case sensitive",

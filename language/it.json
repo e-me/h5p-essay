@@ -6,9 +6,6 @@
         {
           "label": "Tipo",
           "description": "Media opzionale da mostrare sopra la domanda."
-        },
-        {
-          "label": "Disabilita lo zoom dell'immagine"
         }
       ]
     },
@@ -86,36 +83,6 @@
               {
                 "label": "Feedback in mancanza della parola chiave",
                 "description": "Questo feedback sarà visualizzato se nella risposta lo studente non usa né questa parola chiave, né una sua alternativa."
-              },
-              {
-                "label": "Feedback word shown if keyword included",
-                "description": "This option allows you to specify which word should be shown in front of your feedback if a keyword was found in the text.",
-                "options": [
-                  {
-                    "label": "keyword"
-                  },
-                  {
-                    "label": "alternative found"
-                  },
-                  {
-                    "label": "answer given"
-                  },
-                  {
-                    "label": "none"
-                  }
-                ]
-              },
-              {
-                "label": "Feedback word shown if keyword missing",
-                "description": "This option allows you to specify which word should be shown in front of your feedback if a keyword was not found in the text.",
-                "options": [
-                  {
-                    "label": "keyword"
-                  },
-                  {
-                    "label": "none"
-                  }
-                ]
               }
             ]
           }
@@ -174,11 +141,15 @@
             {
               "label": "10 righe"
             }
-          ]
+          ],
+          "default": "10"
         },
         {
           "label": "Attiva \"Riprova\"",
           "description": "Se selezionato, gli studenti possono riprovare a fare il compito."
+        },
+        {
+          "label": "Disabilita lo zoom dell'immagine su immagini-domanda"
         },
         {
           "label": "Ignora il punteggio",
@@ -186,11 +157,21 @@
         },
         {
           "label": "Percentuale di superamento",
-          "description": "Percentuale necessaria per superare la prova"
+          "description": "Percentuale necessaria per superare la prova",
+          "showWhen": {
+            "rules": [
+              {}
+            ]
+          }
         },
         {
           "label": "Percentuale di eccellenza",
-          "description": "Percentuale necessaria per il riconoscimento dell'eccellenza"
+          "description": "Percentuale necessaria per il riconoscimento dell'eccellenza",
+          "showWhen": {
+            "rules": [
+              {}
+            ]
+          }
         },
         {
           "label": "Non considerare maiuscolo/minuscolo",

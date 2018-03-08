@@ -9,6 +9,7 @@ H5P.Essay = function ($, Question) {
   var SOLUTION_INTRODUCTION = 'h5p-essay-solution-introduction';
   var SOLUTION_SAMPLE = 'h5p-essay-solution-sample';
   var SOLUTION_SAMPLE_TEXT = 'h5p-essay-solution-sample-text';
+  var QUESTION_CONTENT = 'h5p-essay-content-';
 
   // The H5P feedback right now only expects true (green)/false (red) feedback, not neutral feedback
   var FEEDBACK_EMPTY= '<span class="h5p-essay-feedback-empty">...</span>';
@@ -18,7 +19,7 @@ H5P.Essay = function ($, Question) {
    *
    * @param {Object} config - Config from semantics.json.
    * @param {string} contentId - ContentId.
-   * @param {Object} [contentData] - contentData.
+   * @param {Object} contentData - contentData.
    */
   function Essay(config, contentId, contentData) {
     // Initialize
@@ -28,6 +29,7 @@ H5P.Essay = function ($, Question) {
 
     // Inheritance
     Question.call(this, 'essay');
+
     /*
      * this.params.behaviour.enableSolutionsButton and this.params.behaviour.enableRetry are used by
      * contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-8} and
@@ -87,23 +89,22 @@ H5P.Essay = function ($, Question) {
       this.previousState = this.contentData.previousState;
     }
 
-    var media = this.params.media.type;
-    if (media && media.library) {
-      var type = media.library.split(' ')[0];
+    if (this.params.media && this.params.media.library) {
+      var type = this.params.media.library.split(' ')[0];
       if (type === 'H5P.Image') {
-        if (media.params.file) {
+        if (this.params.media.params.file) {
           // Register task image
-          this.setImage(media.params.file.path, {
-            disableImageZooming: this.params.media.disableImageZooming,
-            alt: media.params.alt,
-            title: media.params.title
+          this.setImage(this.params.media.params.file.path, {
+            disableImageZooming: this.params.behaviour.disableImageZooming,
+            alt: this.params.media.params.alt,
+            title: this.params.media.params.title
           });
         }
       }
       else if (type === 'H5P.Video') {
-        if (media.params.sources) {
+        if (this.params.media.params.sources) {
           // Register task video
-          this.setVideo(media);
+          this.setVideo(this.params.media);
         }
       }
     }
@@ -121,8 +122,7 @@ H5P.Essay = function ($, Question) {
     this.setIntroduction(this.inputField.getIntroduction());
 
     // Register content
-    this.content = this.inputField.getContent();
-    this.setContent(this.content);
+    this.setContent(this.inputField.getContent(), {"class": QUESTION_CONTENT + this.contentId});
 
     // Register Buttons
     this.addButtons();
@@ -173,7 +173,7 @@ H5P.Essay = function ($, Question) {
 
   /**
    * Check if Essay has been submitted/minimum length met
-   * @return {boolean} True, if answer was given.
+   * @return {Boolean}
    *
    * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-1}
    */
@@ -183,7 +183,6 @@ H5P.Essay = function ($, Question) {
 
   /**
    * Get latest score.
-   * @return {number} latest score.
    *
    * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-2}
    */
@@ -193,7 +192,6 @@ H5P.Essay = function ($, Question) {
 
   /**
    * Get maximum possible score.
-   * @return {number} Score necessary for mastering.
    *
    * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-3}
    */
@@ -215,8 +213,8 @@ H5P.Essay = function ($, Question) {
       this.solution.children[2].appendChild(text);
     }
 
-    // Insert solution after explanations or content. Might fail if DOM structure created by H5P.Question.setContent is changed in the future
-    var predecessor = this.content.parentNode;
+    // Insert solution after explanations or content
+    var predecessor = document.getElementsByClassName(QUESTION_CONTENT + this.contentId)[0];
     predecessor.parentNode.insertBefore(this.solution, predecessor.nextSibling);
 
     // Could be useful for accessibility, but seems to jump to wrong position on some Safari versions
@@ -249,7 +247,6 @@ H5P.Essay = function ($, Question) {
 
   /**
    * Get xAPI data.
-   * @return {Object} xAPI statement.
    *
    * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-6}
    */
@@ -381,14 +378,14 @@ H5P.Essay = function ($, Question) {
 
   /**
    * Compute the score for the results.
-   * @param {Object[]} results - Results from the task.
+   * @param {Object} results - Results from the task.
    * @return {number} Score.
    */
   Essay.prototype.computeScore = function (results) {
     var score = 0;
-    this.params.keywords.forEach(function (keyword, i) {
-      score += Math.min(results[i].length, keyword.options.occurrences) * keyword.options.points;
-    });
+    for (var i = 0; i < this.params.keywords.length; i++) {
+      score += Math.min(results[i].length, this.params.keywords[i].options.occurrences) * this.params.keywords[i].options.points;
+    }
     return score;
   };
 
@@ -400,36 +397,16 @@ H5P.Essay = function ($, Question) {
   Essay.prototype.buildExplanation = function (results) {
     var explanations = [];
 
-    var word = FEEDBACK_EMPTY;
-    this.params.keywords.forEach(function (keyword, i) {
+    for (var i = 0; i < this.params.keywords.length; i++) {
       // Keyword was not found and feedback is provided for this case
-      if (results[i].length === 0 && keyword.options.feedbackMissed) {
-        if (keyword.options.feedbackMissedWord === 'keyword') {
-          // Main keyword defined
-          word = keyword.keyword;
-        }
-        explanations.push({correct: word, text: keyword.options.feedbackMissed});
+      if (results[i].length === 0 && this.params.keywords[i].options.feedbackMissed) {
+        explanations.push({correct: FEEDBACK_EMPTY, text: this.params.keywords[i].options.feedbackMissed});
       }
       // Keyword found and feedback is provided for this case
-      if (results[i].length > 0 && keyword.options.feedbackIncluded) {
-        // Set word in front of feedback
-        switch (keyword.options.feedbackIncludedWord) {
-          case 'keyword':
-            // Main keyword defined
-            word = keyword.keyword;
-            break;
-          case 'alternative':
-            // Alternative that was found
-            word = results[i][0].keyword;
-            break;
-          case 'answer':
-            // Answer matching an alternative at the learner typed it
-            word = results[i][0].match;
-            break;
-        }
-        explanations.push({correct: word, text: keyword.options.feedbackIncluded});
+      if (results[i].length > 0 && this.params.keywords[i].options.feedbackIncluded) {
+        explanations.push({correct: this.params.keywords[i].keyword, text: this.params.keywords[i].options.feedbackIncluded});
       }
-    });
+    }
 
     if (explanations.length > 0) {
       // Sort "included" before "not included", but keep order otherwise
@@ -516,7 +493,7 @@ H5P.Essay = function ($, Question) {
 
   /**
    * Build xAPI answer event.
-   * @return {H5P.XAPIEvent} xAPI answer event.
+   * @return {object} xAPI answer event.
    */
   Essay.prototype.getXAPIAnswerEvent = function () {
     var xAPIEvent = this.createEssayXAPIEvent('answered');

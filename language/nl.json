@@ -6,9 +6,6 @@
         {
           "label": "Type",
           "description": "Optionele media, die boven de vragen worden getoond."
-        },
-        {
-          "label": "Deactiveer zoomen op een afbeelding"
         }
       ]
     },
@@ -86,36 +83,6 @@
               {
                 "label": "Feedback als het trefwoord ontbreekt",
                 "description": "Deze feedback wordt getoond als de gebruiker dit trefwoord of de alternatieven niet in het antwoord opneemt."
-              },
-              {
-                "label": "Feedback word shown if keyword included",
-                "description": "This option allows you to specify which word should be shown in front of your feedback if a keyword was found in the text.",
-                "options": [
-                  {
-                    "label": "keyword"
-                  },
-                  {
-                    "label": "alternative found"
-                  },
-                  {
-                    "label": "answer given"
-                  },
-                  {
-                    "label": "none"
-                  }
-                ]
-              },
-              {
-                "label": "Feedback word shown if keyword missing",
-                "description": "This option allows you to specify which word should be shown in front of your feedback if a keyword was not found in the text.",
-                "options": [
-                  {
-                    "label": "keyword"
-                  },
-                  {
-                    "label": "none"
-                  }
-                ]
               }
             ]
           }
@@ -174,11 +141,15 @@
             {
               "label": "10 regels"
             }
-          ]
+          ],
+          "default": "10"
         },
         {
           "label": "Schakel \"Opnieuw\" in",
           "description": "Indien aangevinkt, kunnen de gebruikers de taak opnieuw proberen."
+        },
+        {
+          "label": "Deactiveer zoomen op een afbeelding bij een vraag afbeelding"
         },
         {
           "label": "Negeer score",
@@ -186,11 +157,21 @@
         },
         {
           "label": "Slagingspercentage",
-          "description": "Het percentage dat nodig is om te slagen"
+          "description": "Het percentage dat nodig is om te slagen",
+          "showWhen": {
+            "rules": [
+              {}
+            ]
+          }
         },
         {
           "label": "Beheersingspercentage",
-          "description": "Het percentage dat nodig is om de stof te beheersen"
+          "description": "Het percentage dat nodig is om de stof te beheersen",
+          "showWhen": {
+            "rules": [
+              {}
+            ]
+          }
         },
         {
           "label": "Hef de hoofdlettergevoeligheid op",
